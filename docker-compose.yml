@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # 1. Server Chat Engine (Mattermost UI)
+  sgu-chat-mattermost:
+    image: mattermost/mattermost-preview:latest
+    container_name: sgu-chat-mattermost
+    ports:
+      - "8065:8065"
+    volumes:
+      # Tự động nạp file cấu hình giao diện & tính năng SGU từ repo vào container
+      - ./mattermost-config/config.json:/mattermost/config/config.json
+    restart: unless-stopped
+
+  # 2. Database PostgreSQL cho Spring Boot (Lưu dữ liệu SGU: Sinh viên, Lịch thi, Từ bậy)
+  sgu-chat-postgres:
+    image: postgres:15-alpine
+    container_name: sgu-chat-postgres
+    environment:
+      POSTGRES_USER: sgu_user
+      POSTGRES_PASSWORD: sgu_password
+      POSTGRES_DB: sgu_chat_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Lưu trữ dữ liệu DB trên máy thật để không bị mất khi stop container
+      - postgres_sgu_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_sgu_data:
