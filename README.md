@@ -8,7 +8,7 @@ Hệ thống giao tiếp nội bộ tích hợp nghiệp vụ đào tạo dành 
 
 Hệ thống được thiết kế theo mô hình **Headless Backend**:
 
-1. **Frontend / Chat Engine:** Sử dụng **Mattermost Open-Source** (đã được cấu hình thương hiệu SGU Chat, bộ màu, kênh mặc định và tích hợp Bot/Webhooks). Đảm nhận toàn bộ giao diện Web, Desktop App và Mobile App.
+1. **Frontend / Chat Engine:** Sử dụng **Mattermost Open-Source** (đã được cấu hình thương hiệu SGU Chat, bộ màu, kênh mặc định và tích hợp Bot/Webhooks). Đảm nhận toàn bộ giao diện Web, Desktop App và Mobile App. Tham khảo thêm tài liệu tại đây **https://docs.mattermost.com/**.
 2. **Backend Services (Spring Boot):** Đảm nhận toàn bộ logic nghiệp vụ SGU (Import sinh viên, lọc từ ngữ thô tục, tra cứu lịch thi `/lichthi`, thông báo tiến độ học tập).
 3. **Database (PostgreSQL 15):** Lưu trữ độc lập dữ liệu nghiệp vụ của Spring Boot (`sgu_chat_db`), không can thiệp trực tiếp vào CSDL của Mattermost.
 4. **Đồng bộ Team:** Quản lý cấu hình giao diện & tính năng tập trung qua file `mattermost-config/config.json` mounted bằng Docker Volume.
