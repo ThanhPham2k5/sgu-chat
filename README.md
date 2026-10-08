@@ -29,7 +29,7 @@ Các thành viên trong nhóm dev cần cài đặt sẵn trên máy:
 
 ### 1. Kéo mã nguồn về máy local
 ```bash
-git clone [https://github.com/ThanhPham2k5/sgu-chat.git](https://github.com/ThanhPham2k5/sgu-chat.git)
+git clone https://github.com/ThanhPham2k5/sgu-chat.git
 cd sgu-chat
 ```
 
