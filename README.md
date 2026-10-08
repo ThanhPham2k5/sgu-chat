@@ -63,26 +63,29 @@ mattermost.server.url=http://localhost:8065
 mattermost.bot.token=YOUR_BOT_ACCESS_TOKEN_HERE
 ```
 
-## 🔄 Quy trình Cập nhật & Đồng bộ Giao diện Mattermost (config.json)
-Khi bất kỳ thành viên nào vào System Console trên Mattermost (http://localhost:8065) để chỉnh sửa giao diện, logo, bộ màu hay cài đặt Webhook/Bot:
+## 🔄 Thiết lập Giao diện & Tích hợp Mattermost (System Console)
 
-### 1. Trích xuất cấu hình mới nhất ra ngoài Repo:
-```bash
-docker cp sgu-chat-mattermost:/mm/mattermost/config/config.json ./mattermost-config/config.json
-```
+*(Lưu ý: Để đảm bảo sự ổn định của Docker Container, dự án không đồng bộ trực tiếp file `config.json`. Các thiết lập Mattermost sẽ được cấu hình trực tiếp qua Web UI).*
 
-### 2. Commit và Push lên GitHub:
-```bash
-git add mattermost-config/config.json
-git commit -m "chore: update mattermost system console settings"
-git push origin main
-```
+Khi khởi chạy hệ thống lần đầu (hoặc khi reset lại Docker), bạn cần thực hiện các bước sau:
 
-### 3. Các thành viên còn lại cập nhật:
-```bash
-git pull origin main
-docker compose restart sgu-chat-mattermost
-```
+### 1. Khởi tạo Admin & Bật Tích hợp (Integrations)
+- Truy cập `http://localhost:8065` và tạo tài khoản Admin (VD: `admin@sgu.edu.vn` / `admin`).
+- Vào góc trên bên trái chọn **System Console** $\rightarrow$ **Integrations** $\rightarrow$ **Integration Management**.
+- Chuyển tất cả các mục sang **`True`** (Incoming/Outgoing Webhooks, Slash Commands, Bot Accounts) $\rightarrow$ Bấm **Save**.
+
+### 2. Tùy chỉnh Thương hiệu SGU
+- Tại System Console, vào **Site Configuration** $\rightarrow$ **Customization**.
+- Đổi **Site Name** thành `SGU Chat` và thay đổi màu sắc/logo tùy ý.
+
+### 3. Khởi tạo SGU Bot & Đồng bộ Backend
+Để Spring Boot có thể gửi tin nhắn tự động vào Mattermost, hệ thống cần một Bot đại diện:
+1. Quay lại màn hình Chat chính $\rightarrow$ Chọn Menu 9 dấu chấm (góc trên trái) $\rightarrow$ **Integrations** $\rightarrow$ **Bot Accounts**.
+2. Chọn **Add Bot Account** $\rightarrow$ Đặt tên `sgu-bot` (Role: `System Admin`) $\rightarrow$ Bấm Create.
+3. **Copy chuỗi Bot Access Token** và gửi cho các thành viên trong team.
+4. Mọi người trong team dán Token này vào file `src/main/resources/application.properties` của Spring Boot:
+   ```properties
+   mattermost.bot.token=CHUỖI_TOKEN_VỪA_COPY
 
 ## 🗄️ Kết nối CSDL bằng TablePlus
 * Host: localhost
